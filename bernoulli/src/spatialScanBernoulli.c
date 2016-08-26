@@ -8,7 +8,7 @@
 int main(int argc, char ** argv) {
 
 	if(argc != 7) {
-		printf("Incorrect number of parameters: 4DScanBerAgg [inputFile] [windowInc] [windowCount] [#ofClusters] [#ofMonteCarlo] [HighOrLowIndicator]\n");
+		printf("Incorrect number of parameters: SpatialScanBernoulli [inputFile] [windowInc] [windowCount] [#ofClusters] [#ofMonteCarlo] [HighOrLowIndicator]\n");
 		printf("[HighOrLowIndicator]\n\t1: High Only\n\t-1: Low Only\n\t0: Both\n");
 		exit(1);
 	}
