@@ -25,16 +25,16 @@ void randomLabel(int * indAll, int casCount, int allCount) {
 }
 
 
-int * monteCarlo(double * x, double * y, int * locEnding, int locCount, int casCount, int allCount, int * clusterCase, int * centerID, double * cRadius, int nClusters, int nSim) {
-	int * nAbove;
+int * monteCarlo(double * x, double * y, int * locEnding, int locCount, int casCount, int allCount, int * clusterCase, int * centerID, double * cRadius, bool * highCluster, int nClusters, int nSim) {
+	int * nExtreme;
 
-	if(NULL == (nAbove = (int *) malloc (nClusters * sizeof(int)))) {
+	if(NULL == (nExtreme = (int *) malloc (nClusters * sizeof(int)))) {
 		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
 		exit(1);
 	}
 
 	for(int i = 0; i < nClusters; i++)
-		nAbove[i] = 0;
+		nExtreme[i] = 0;
 
 	int * indAll;
 	int * simCass;
@@ -73,14 +73,16 @@ int * monteCarlo(double * x, double * y, int * locEnding, int locCount, int casC
 					simCasInc += simCass[k];
 				}	
 			}
-			if(simCasInc >= clusterCase[j])
-				nAbove[j] ++;
+			if(highCluster[j] && simCasInc >= clusterCase[j])
+				nExtreme[j] ++;
+			else if(!highCluster[j] && simCasInc <= clusterCase[j])
+				nExtreme[j] ++;
 		}
 	}
 
 	free(indAll);
 	free(simCass);
 
-	return nAbove;
+	return nExtreme;
 
 }

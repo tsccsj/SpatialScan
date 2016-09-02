@@ -114,6 +114,7 @@ int main(int argc, char ** argv) {
 	int * clusterCas;
 	int * clusterCon;
 	double * cRadius;
+	bool * highCluster;
 
 	if(NULL == (clusterCas = (int *) malloc (nClusters * sizeof(int)))) {
 		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
@@ -124,6 +125,10 @@ int main(int argc, char ** argv) {
 		exit(1);
 	}
 	if(NULL == (cRadius = (double *) malloc (nClusters * sizeof(double)))) {
+		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
+		exit(1);
+	}
+	if(NULL == (highCluster = (bool *) malloc (nClusters * sizeof(bool)))) {
 		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
 		exit(1);
 	}
@@ -141,10 +146,16 @@ int main(int argc, char ** argv) {
 		clusterCas[i] = casInW[aCenter * wCount + aRadius];
 		clusterCon[i] = conInW[aCenter * wCount + aRadius];
 		cRadius[i] = wSize * (aRadius + 1);
+
+		double expCas = (double)casCount*(clusterCas[i] + clusterCon[i])/(casCount+conCount);
+		if(clusterCas[i] > expCas) 	//High clusters
+			highCluster[i] = true;
+		else
+			highCluster[i] = false;
 	}
 	
 //Here is the Monte Carlo Simulation
-	int * nAbove;
+	int * nExtreme;
 
 	if(nSim > 0) {
 		int * locEnding;
@@ -159,7 +170,7 @@ int main(int argc, char ** argv) {
 			locEnding[i] = accCount;
 		}
 
-		nAbove = monteCarlo(x, y, locEnding, locCount, casCount, casCount + conCount, clusterCas, center, cRadius, nClusters, nSim);	
+		nExtreme = monteCarlo(x, y, locEnding, locCount, casCount, casCount + conCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);	
 
 		free(locEnding);
 	}	
@@ -178,17 +189,14 @@ int main(int argc, char ** argv) {
 		double expCon = (double)conCount*(clusterCas[i] + clusterCon[i])/(casCount+conCount);
 
 		printf("%d", i);
-		if(clusterCas[i] > expCas) 	//High clusters
+		if(highCluster[i]) 		//High clusters
 			printf(",H");
 		else				//Low clusters
 			printf(",L");
 		printf(",%lf,%lf,%lf", x[aCenter], y[aCenter], cRadius[i]);
 		printf(",%d,%d,%lf,%lf", clusterCas[i], clusterCon[i], expCas, expCon);
 		if(nSim > 0)
-			if(clusterCas[i] > expCas) 	//High clusters
-				printf(",%lf,%lf\n", cLL[i], (double)(nAbove[i] + 1) / (nSim + 1));
-			else				//Low clusters
-				printf(",%lf,%lf\n", cLL[i], (double)(nSim - nAbove[i] + 1) / (nSim + 1));
+			printf(",%lf,%lf\n", cLL[i], (double)(nExtreme[i] + 1) / (nSim + 1));
 		else
 			printf(",%lf\n", cLL[i]);
 	}
@@ -223,6 +231,7 @@ int main(int argc, char ** argv) {
 	free(center);
 	free(radius);
 	free(cLL);
+	free(highCluster);
 
 	free(ll);
 
@@ -235,7 +244,7 @@ int main(int argc, char ** argv) {
 	free(nCons);
 
 	if(nSim > 0)
-		free(nAbove);
+		free(nExtreme);
 
 	return 0;
 }
