@@ -100,6 +100,7 @@ int main(int argc, char ** argv) {
 	int * radius;
 	double * cLL;
 
+
 	if(NULL == (center = (int *) malloc (nClusters * sizeof(int)))) {
 		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
 		exit(1);
@@ -164,9 +165,9 @@ int main(int argc, char ** argv) {
 	int * nExtreme;
 
 	if(nSim > 0) {
-
-
+		nExtreme = monteCarlo(x, y, intensity, locCount, casCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);
 	}
+
 
 	printf("############### Cluster Info ###############\n");
 	printf("ID,HL,X,Y,Radius,#Cas,Exp#Cas");
@@ -174,6 +175,7 @@ int main(int argc, char ** argv) {
 		printf(",LL,P\n");
 	else
 		printf(",LL\n");
+
 	for(int i = 0; i < nClusters; i ++) {
 		aCenter = center[i];
 		aRadius = radius[i];
@@ -232,5 +234,10 @@ int main(int argc, char ** argv) {
 	free(y);
 	free(nCass);
 	free(intensity);
+
+	if(nSim > 0) {
+		free(nExtreme);
+	}
+
 	return 0;
 }

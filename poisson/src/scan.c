@@ -40,7 +40,7 @@ void loglikelihood(double * ll, int * casInW, double * intenInW, int totalWindow
 		inten = intenInW[i];
 
 		if(cas == -1) {
-			ll[i] = 1;
+			ll[i] = -9999;
 		}
 		else if(cas > inten) { //High cluster of cases
 			if(highCluster) {
@@ -50,7 +50,7 @@ void loglikelihood(double * ll, int * casInW, double * intenInW, int totalWindow
 				ll[i] = llTemp;
 			}
 			else
-				ll[i] = 1;
+				ll[i] = -9999;
 		}
 		else if(cas < inten) { //Low cluster of cases
 			if(lowCluster) {
@@ -60,7 +60,7 @@ void loglikelihood(double * ll, int * casInW, double * intenInW, int totalWindow
 				ll[i] = llTemp;
 			}
 			else
-				ll[i] = 1;
+				ll[i] = -9999;
 		}
 	}
 
@@ -76,7 +76,7 @@ void findTopNCluster(double * x, double * y, int locCount, double * ll, double w
 	
 	for(int i = 0; i < locCount; i++) {
 		for(int j = 0; j < wCount; j++) {
-			if(ll[i * wCount + j] < 0) {
+			if(ll[i * wCount + j] > -9990) {
 				if(aCenter < 0) {
 					aCenter = i;
 					aRadius = j;
@@ -109,7 +109,7 @@ void findTopNCluster(double * x, double * y, int locCount, double * ll, double w
 			if(maxWindow < 0)
 				maxWindow = 0;
 			for(int j = maxWindow; j < wCount; j++)
-				ll[i * wCount + j] = 1;
+				ll[i * wCount + j] = -9999;
 		}
 
 		//Find secoundary clusters
@@ -118,7 +118,7 @@ void findTopNCluster(double * x, double * y, int locCount, double * ll, double w
 
 		for(int i = 0; i < locCount; i++) {
 			for(int j = 0; j < wCount; j++) {
-				if(ll[i * wCount + j] < 0) {
+				if(ll[i * wCount + j] > -9990) {
 					if(aCenter < 0) {
 						aCenter = i;
 						aRadius = j;

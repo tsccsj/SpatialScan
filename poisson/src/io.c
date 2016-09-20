@@ -24,7 +24,7 @@ void readFile(FILE * file, double * x, double * y, int * nCass, double * intensi
 	casCount = 0;
 	totalInten = 0;
 
-	while(EOF != fscanf(file, "%lf,%lf,%d,%ld\n", x + locID, y + locID, nCass + locID, intensity + locID)) {
+	while(EOF != fscanf(file, "%lf,%lf,%d,%lf\n", x + locID, y + locID, nCass + locID, intensity + locID)) {
 		casCount += nCass[locID];
 		totalInten += intensity[locID];
 		locID ++;

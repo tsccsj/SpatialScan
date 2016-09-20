@@ -11,7 +11,7 @@ void simulateCases(double * preInten, int * simCases, int locCount, int casCount
 	static std::mt19937 rng(rd());
 	static std::uniform_real_distribution<double> uni(0, preInten[locCount - 1]); //[a, b)
 
-	for(int i = 0; i < casCount; i++) {
+	for(int i = 0; i < locCount; i++) {
 		simCases[i] = 0;
 	}
 
@@ -36,7 +36,9 @@ int * monteCarlo(double * x, double * y, double * intensity, int locCount, int c
 		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
 		exit(1);
 	}
-
+	for(int i = 0; i < nClusters; i++) {
+		nExtreme[i] = 0;
+	}
 
 	double * preInten;
 	int * simCass;
