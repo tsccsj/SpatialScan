@@ -5,18 +5,25 @@
 
 using namespace std;
 
-void simulateCases(double * intensity, int * simCases, int locCount, int casCount) {
+void simulateCases(double * preInten, int * simCases, int locCount, int casCount) {
 	
 	static std::random_device rd;
 	static std::mt19937 rng(rd());
-	static std::discrete_distribution<int> d (intensity, intensity + locCount);
+	static std::uniform_real_distribution<double> uni(0, preInten[locCount - 1]); //[a, b)
 
 	for(int i = 0; i < locCount; i++) {
 		simCases[i] = 0;
 	}
 
+	double randomNumber;
 	for(int i = 0; i < casCount; i++) {
-		simCases[d(rng)] ++;
+		randomNumber = uni(rng);
+		for(int j = 0; j < locCount; j++) {
+			if(randomNumber < preInten[j]) {
+				simCases[j] ++;
+				break;
+			}
+		}	
 	}
 
 	
@@ -33,7 +40,19 @@ int * monteCarlo(double * x, double * y, double * intensity, int locCount, int c
 		nExtreme[i] = 0;
 	}
 
+	double * preInten;
 	int * simCass;
+
+	if(NULL == (preInten = (double *) malloc (locCount * sizeof(double)))) {
+		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
+		exit(1);
+	}
+	
+	preInten[0] = intensity[0];
+
+	for(int i = 1; i < locCount; i++) {
+		preInten[i] = preInten[i-1] + intensity[i];
+	}
 
 	if(NULL == (simCass = (int *) malloc (locCount * sizeof(int)))) {
 		printf("ERROR: Out of memory at line %d in file %s\n", __LINE__, __FILE__);
@@ -42,7 +61,7 @@ int * monteCarlo(double * x, double * y, double * intensity, int locCount, int c
 
 	for(int i = 0; i < nSim; i++) {
 
-		simulateCases(intensity, simCass, locCount, casCount);
+		simulateCases(preInten, simCass, locCount, casCount);
 		
 #pragma omp parallel for
 		for(int j = 0; j < nClusters; j++) {
@@ -63,6 +82,7 @@ int * monteCarlo(double * x, double * y, double * intensity, int locCount, int c
 	}
 
 
+	free(preInten);
 	free(simCass);
 
 	return nExtreme;	
