@@ -81,11 +81,6 @@ int main(int argc, char ** argv) {
 		exit(1);
 	}
 
-	for(int i = 0; i < locCount * wCount; i++) {
-		casInW[i] = 0;
-		intenInW[i] = 0.0;
-	}
-
 	getWindowCandI(x, y, nCass, intensity, locCount, wSize, wCount, casInW, intenInW);
 
 	double * ll;
@@ -165,7 +160,8 @@ int main(int argc, char ** argv) {
 	int * nExtreme;
 
 	if(nSim > 0) {
-		nExtreme = monteCarlo(x, y, intensity, locCount, casCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);
+//		nExtreme = monteCarloOld(x, y, intensity, locCount, casCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);
+		monteCarlo(x, y, intensity, intenInW, locCount, casCount, wSize, wCount, highLow, cLL, highCluster, nClusters, nSim);
 	}
 
 

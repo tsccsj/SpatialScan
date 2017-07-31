@@ -7,6 +7,11 @@ void getWindowCandI(double * x, double * y, int * nCass, double * intensity, int
 	double distance;
 	int minWindow;
 
+	for(int i = 0; i < locCount * wCount; i++) {
+		casInW[i] = 0;
+		intenInW[i] = 0.0;
+	}
+
 #pragma omp parallel for private(distance, minWindow)
 	for(int i = 0; i < locCount; i++) {
 		for(int j = 0; j < locCount; j++) {
@@ -17,6 +22,30 @@ void getWindowCandI(double * x, double * y, int * nCass, double * intensity, int
 			for(int k = minWindow; k < wCount; k++) {
 				casInW[i * wCount + k] += nCass[j];
 				intenInW[i * wCount + k] += intensity[j];
+			}
+		}
+	}
+
+	return;
+}
+
+void getWindowCOnly(double * x, double * y, int * nCass, int locCount, double wSize, int wCount, int * casInW) {
+	double distance;
+	int minWindow;
+	
+	for(int i = 0; i < locCount * wCount; i++) {
+		casInW[i] = 0;
+	}
+
+#pragma omp parallel for private(distance, minWindow)
+	for(int i = 0; i < locCount; i++) {
+		for(int j = 0; j < locCount; j++) {
+			distance = sqrt((x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]));
+			minWindow = (int)(ceil(distance / wSize));
+			if(minWindow > 0)
+				minWindow --;
+			for(int k = minWindow; k < wCount; k++) {
+				casInW[i * wCount + k] += nCass[j];
 			}
 		}
 	}
