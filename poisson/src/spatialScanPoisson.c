@@ -183,8 +183,7 @@ int main(int argc, char ** argv) {
 		printf(",%lf,%lf,%lf", x[aCenter], y[aCenter], cRadius[i]);
 		printf(",%d,%lf", clusterCas[i], clusterInten[i]);
 		if(nSim > 0)
-			//printf(",%lf,%lf\n", cLL[i], (double)(nExtreme[i] + 1) / (nSim + 1));
-			printf("\t\t%d,%d,%lf\n", nExtreme[i], nSim, (double)(nExtreme[i] + 1) / (nSim + 1));
+			printf(",%lf,%lf\n", cLL[i], (double)(nExtreme[i] + 1) / (nSim + 1));
 		else
 			printf(",%lf\n", cLL[i]);
 	}
