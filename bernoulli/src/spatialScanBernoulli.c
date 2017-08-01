@@ -166,7 +166,7 @@ int main(int argc, char ** argv) {
 		}
 
 //		nExtreme = monteCarloOld(x, y, locEnding, locCount, casCount, casCount + conCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);	
-		nExtreme = monteCarlo(x, y, locEnding, locCount, casCount, casCount + conCount, wSize, wCount, highLow, cLL, highCluster, nClusters, nSim);
+		nExtreme = monteCarlo(x, y, locEnding, locCount, casCount, casCount + conCount, wSize, wCount, highLow, cLL, nClusters, nSim);
 
 		free(locEnding);
 	}	

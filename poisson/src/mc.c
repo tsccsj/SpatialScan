@@ -23,7 +23,7 @@ void simulateCases(double * intensity, int * simCases, int locCount, int casCoun
 	
 }
 
-int * monteCarlo(double * x, double * y, double * intensity, double * intenInW, int locCount, int casCount, double wSize, int wCount, bool highLow, double * clusterLL, bool * highCluster, int nClusters, int nSim) {
+int * monteCarlo(double * x, double * y, double * intensity, double * intenInW, int locCount, int casCount, double wSize, int wCount, bool highLow, double * clusterLL, int nClusters, int nSim) {
 
 	int * nExtreme;
 

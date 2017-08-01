@@ -160,7 +160,8 @@ int main(int argc, char ** argv) {
 	int * nExtreme;
 
 	if(nSim > 0) {
-		nExtreme = monteCarloOld(x, y, intensity, locCount, casCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);
+//		nExtreme = monteCarloOld(x, y, intensity, locCount, casCount, clusterCas, center, cRadius, highCluster, nClusters, nSim);
+		nExtreme = monteCarlo(x, y, intensity, intenInW, locCount, casCount, wSize, wCount, highLow, cLL, nClusters, nSim);
 	}
 
 
