@@ -5,7 +5,7 @@
 #include "scan.h"
 
 using namespace std;
-
+/*
 void simulateCases(double * intensity, int * simCases, int locCount, int casCount) {
 	
 	static std::random_device rd;
@@ -21,6 +21,28 @@ void simulateCases(double * intensity, int * simCases, int locCount, int casCoun
 	}
 
 	
+}
+*/
+void simulateCases(double * preInten, int * simCases, int locCount, int casCount) {
+	
+	static std::random_device rd;
+	static std::mt19937 rng(rd());
+	static std::uniform_real_distribution<double> uni(0, preInten[locCount - 1]); //[a, b)
+
+	for(int i = 0; i < locCount; i++) {
+		simCases[i] = 0;
+	}
+
+	double randomNumber;
+	for(int i = 0; i < casCount; i++) {
+		randomNumber = uni(rng);
+		for(int j = 0; j < locCount; j++) {
+			if(randomNumber < preInten[j]) {
+				simCases[j] ++;
+				break;
+			}
+		}	
+	}
 }
 
 int * monteCarlo(double * x, double * y, double * intensity, double * intenInW, int locCount, int casCount, double wSize, int wCount, bool highLow, double * clusterLL, bool * highCluster, int nClusters, int nSim) {
