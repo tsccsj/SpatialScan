@@ -1,3 +1,9 @@
+/**
+ * spatialScanBernoulli.c
+ * Authors: Yizhao Gao <yizhaotsccsj@gmail.com>
+ * Date: {08/01/2017}
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
