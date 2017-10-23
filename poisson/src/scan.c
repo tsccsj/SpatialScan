@@ -74,7 +74,7 @@ void loglikelihood(double * ll, int * casInW, double * intenInW, int totalWindow
 		cas = casInW[i];
 		inten = intenInW[i];
 
-		if(cas == -1) {
+		if(cas == -1 || inten < 0.000001) {
 			ll[i] = -9999;
 		}
 		else if(cas > inten) { //High cluster of cases
